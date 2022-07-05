@@ -23,7 +23,7 @@ class Package {
 	 *
 	 * @access public
 	 */
-	public function init() {
+	public static function init() {
 		add_action( 'cocart_rest_api_controllers', array( __CLASS__, 'include_api_controllers' ) );
 		add_filter( 'cocart_rest_api_get_rest_namespaces', array( __CLASS__, 'add_rest_namespace' ) );
 	}
