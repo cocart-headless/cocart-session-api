@@ -24,7 +24,6 @@ class Package {
 	 * @access public
 	 */
 	public static function init() {
-		add_action( 'cocart_rest_api_controllers', array( __CLASS__, 'include_api_controllers' ) );
 		add_filter( 'cocart_rest_api_get_rest_namespaces', array( __CLASS__, 'add_rest_namespace' ) );
 	}
 
@@ -60,17 +59,6 @@ class Package {
 	public static function get_path() {
 		return dirname( __DIR__ );
 	} // END get_path()
-
-	/**
-	 * Includes the API controllers.
-	 *
-	 * @access public
-	 * @static
-	 */
-	public static function include_api_controllers() {
-		include_once dirname( __FILE__ ) . '/api/v2/class-cocart-session-api-controller.php';
-		include_once dirname( __FILE__ ) . '/api/v2/class-cocart-sessions-api-controller.php';
-	}
 
 	/**
 	 * Adds the REST API namespaces.
