@@ -82,8 +82,10 @@ class Package {
 	 */
 	protected static function get_v2_controllers() {
 		return array(
-			'cocart-v2-session'  => 'CoCart_Session_V2_Controller',
-			'cocart-v2-sessions' => 'CoCart_Sessions_V2_Controller',
+			'cocart-v2-session'        => 'CoCart_REST_Session_v2_Controller',
+			'cocart-v2-session-items'  => 'CoCart_REST_Session_Items_v2_Controller',
+			'cocart-v2-delete-session' => 'CoCart_REST_Delete_Session_v2_Controller',
+			'cocart-v2-sessions'       => 'CoCart_REST_Sessions_v2_Controller',
 		);
 	} // END get_v2_controllers()
 
