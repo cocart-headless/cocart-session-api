@@ -79,19 +79,41 @@ class CoCart_Sessions_V2_Controller {
 	 *
 	 * @throws CoCart_Data_Exception Exception if invalid data is detected.
 	 *
-	 * @access  public
-	 * @since   3.0.0
-	 * @version 3.1.0
-	 * @return  WP_REST_Response Returns the carts in session from the database.
+	 * @access public
+	 *
+	 * @since 3.0.0 Introduced.
+	 * @since 4.0.0 Added pagination and order filtering.
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 *
+	 * @return WP_REST_Response Returns the carts in session from the database.
 	 */
-	public function get_carts_in_session() {
+	public function get_carts_in_session( $request = array() ) {
 		try {
 			global $wpdb;
+
+			$params = $request->get_params();
+
+			$page     = ! empty( $params['page'] ) ? (int) $params['page'] : '1'; // Offset
+			$per_page = ! empty( $params['per_page'] ) ? (int) $params['per_page'] : '10'; // Limit
+			$order    = ! empty( $params['order'] ) ? strtoupper( $params['order'] ) : 'DESC';
+			$order_by = ! empty( $params['orderby'] ) ? strtolower( $params['orderby'] ) : 'cart_created';
+
+			// Gets the max results.
+			$max_results    = $wpdb->get_results(
+				"
+				SELECT COUNT(*) as num_rows 
+				FROM {$wpdb->prefix}cocart_carts",
+				ARRAY_A
+			);
+			$total_sessions = $max_results[0]['num_rows'];
 
 			$results = $wpdb->get_results(
 				"
 				SELECT * 
-				FROM {$wpdb->prefix}cocart_carts",
+				FROM {$wpdb->prefix}cocart_carts
+				ORDER BY {$order_by} {$order}
+				LIMIT {$page}, {$per_page}",
 				ARRAY_A
 			);
 
@@ -99,6 +121,7 @@ class CoCart_Sessions_V2_Controller {
 				throw new CoCart_Data_Exception( 'cocart_no_carts_in_session', __( 'No carts in session!', 'cart-rest-api-for-woocommerce' ), 404 );
 			}
 
+			// Contains the results of sessions.
 			$sessions = array();
 
 			foreach ( $results as $key => $cart ) {
@@ -115,8 +138,6 @@ class CoCart_Sessions_V2_Controller {
 					$name = '';
 				}
 
-				$cart_source = $cart['cart_source'];
-
 				$sessions[] = array(
 					'cart_id'         => $cart['cart_id'],
 					'cart_key'        => $cart['cart_key'],
@@ -124,12 +145,36 @@ class CoCart_Sessions_V2_Controller {
 					'customers_email' => $email,
 					'cart_created'    => gmdate( 'm/d/Y H:i:s', $cart['cart_created'] ),
 					'cart_expiry'     => gmdate( 'm/d/Y H:i:s', $cart['cart_expiry'] ),
-					'cart_source'     => $cart_source,
+					'cart_source'     => $cart['cart_source'],
 					'link'            => rest_url( sprintf( '/%s/%s', $this->namespace, 'session/' . $cart['cart_key'] ) ),
 				);
 			}
 
-			return CoCart_Response::get_response( $sessions, $this->namespace, $this->rest_base );
+			$results = array(
+				'sessions'       => $sessions,
+				'page'           => (int) $page,
+				'total_pages'    => $per_page > 1 ? (int) ceil( $total_sessions / (int) $per_page ) : 1,
+				'total_sessions' => (int) $total_sessions,
+			);
+
+			$base = add_query_arg( $request->get_query_params(), rest_url( sprintf( '/%s/%s', $this->namespace, $this->rest_base ) ) );
+
+			if ( $page > 1 ) {
+				$prev_page = $page - 1;
+
+				if ( $prev_page > $total_sessions ) {
+					$prev_page = $total_sessions;
+				}
+
+				$results['prev'] = add_query_arg( 'page', $prev_page, $base );
+			}
+
+			if ( $total_sessions > $page ) {
+				$next_page       = $page + 1;
+				$results['next'] = add_query_arg( 'page', $next_page, $base );
+			}
+
+			return CoCart_Response::get_response( $results, $this->namespace, $this->rest_base );
 		} catch ( \CoCart_Data_Exception $e ) {
 			return CoCart_Response::get_error_response( $e->getErrorCode(), $e->getMessage(), $e->getCode(), $e->getAdditionalData() );
 		}
