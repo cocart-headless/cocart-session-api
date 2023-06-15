@@ -139,13 +139,15 @@ class CoCart_Sessions_V2_Controller {
 	 * Get the schema for returning the sessions.
 	 *
 	 * @access public
-	 * @since  3.1.0 Introduced
+	 *
+	 * @since 3.1.0 Introduced
+	 *
 	 * @return array
 	 */
 	public function get_public_object_schema() {
 		return array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'CoCart - ' . __( 'View all Sessions', 'cart-rest-api-for-woocommerce' ),
+			'title'      => 'cocart_sessions',
 			'type'       => 'object',
 			'properties' => array(
 				'cart_id'         => array(
