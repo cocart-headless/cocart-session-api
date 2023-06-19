@@ -4,9 +4,8 @@
  *
  * @author  Sébastien Dumont
  * @package CoCart\Session API
- * @since   2.8.1
- * @version 3.4.0
- * @license GPL-2.0+
+ * @since   2.8.1 Introduced.
+ * @version 4.0.0
  */
 
 namespace CoCart\SessionAPI;
@@ -22,6 +21,8 @@ class Package {
 	 * Initiate Package.
 	 *
 	 * @access public
+	 *
+	 * @static
 	 */
 	public static function init() {
 		add_filter( 'cocart_rest_api_get_rest_namespaces', array( __CLASS__, 'add_rest_namespace' ) );
@@ -31,7 +32,9 @@ class Package {
 	 * Return the name of the package.
 	 *
 	 * @access public
+	 *
 	 * @static
+	 *
 	 * @return string
 	 */
 	public static function get_name() {
@@ -42,7 +45,9 @@ class Package {
 	 * Return the version of the package.
 	 *
 	 * @access public
+	 *
 	 * @static
+	 *
 	 * @return string
 	 */
 	public static function get_version() {
@@ -53,7 +58,9 @@ class Package {
 	 * Return the path to the package.
 	 *
 	 * @access public
+	 *
 	 * @static
+	 *
 	 * @return string
 	 */
 	public static function get_path() {
@@ -64,7 +71,9 @@ class Package {
 	 * Adds the REST API namespaces.
 	 *
 	 * @access public
+	 *
 	 * @static
+	 *
 	 * @return array
 	 */
 	public static function add_rest_namespace( $namespaces ) {
@@ -77,7 +86,9 @@ class Package {
 	 * List of controllers in the cocart/v2 namespace.
 	 *
 	 * @access protected
+	 *
 	 * @static
+	 *
 	 * @return array
 	 */
 	protected static function get_v2_controllers() {
