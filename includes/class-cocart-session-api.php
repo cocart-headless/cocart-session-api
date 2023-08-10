@@ -36,6 +36,10 @@ class Package {
 	 * @static
 	 */
 	public static function init() {
+		// Settings
+		add_filter( 'cocart_get_settings_pages', array( __CLASS__, 'settings_page' ), 5 );
+
+		// REST API Controllers
 		add_filter( 'cocart_rest_api_get_rest_namespaces', array( __CLASS__, 'add_rest_namespace' ) );
 	}
 
@@ -77,6 +81,21 @@ class Package {
 	public static function get_path() {
 		return dirname( __DIR__ );
 	} // END get_path()
+
+	/**
+	 * Adds settings for Session API.
+	 *
+	 * @access public
+	 *
+	 * @static
+	 *
+	 * @return array
+	 */
+	public static function settings_page( $settings ) {
+		$settings['session'] = include dirname( __FILE__ ) . '/settings/class-cocart-admin-settings-session.php';
+
+		return $settings;
+	} // END settings_page()
 
 	/**
 	 * Adds the REST API namespaces.
