@@ -52,7 +52,7 @@ class CoCart_REST_Session_Items_v2_Controller extends CoCart_REST_Session_v2_Con
 	 * @since   3.0.0 Introduced.
 	 * @version 3.1.0
 	 *
-	 * @param WP_REST_Request $request Full details about the request.
+	 * @param WP_REST_Request $request Request used to generate the response.
 	 *
 	 * @return WP_REST_Response Returns the cart items from the session.
 	 */
