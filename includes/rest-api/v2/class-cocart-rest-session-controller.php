@@ -907,7 +907,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		$params['response']['default'] = ! empty( $defaults['session_response'] ) ? $defaults['session_response'] : 'default';
 
 		$params['response']['enum'] = array(
-			'all',
+			'default',
 			'digital',
 			'digital_fees',
 			'removed_items',
