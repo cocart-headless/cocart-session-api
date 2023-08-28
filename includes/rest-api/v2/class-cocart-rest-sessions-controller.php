@@ -67,13 +67,42 @@ class CoCart_REST_Sessions_v2_Controller {
 	/**
 	 * Check whether a given request has permission to read site data.
 	 *
+	 * @throws CoCart\DataException Exception if invalid data is detected.
+	 *
 	 * @access public
+	 *
+	 * @since 3.0.0 Introduced
+	 * @since 4.0.0 Use namespace for DataException.
+	 * @since 4.0.0 Added check for the access token maybe required.
 	 *
 	 * @return WP_Error|boolean
 	 */
 	public function get_items_permissions_check() {
-		if ( ! wc_rest_check_manager_permissions( 'settings', 'read' ) ) {
-			return new WP_Error( 'cocart_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'cart-rest-api-for-woocommerce' ), array( 'status' => rest_authorization_required_code() ) );
+		try {
+			$access_token         = cocart_get_setting( 'general', 'access_token' );
+			$require_access_token = cocart_get_setting( 'general', 'require_access_token' );
+
+			if ( $require_access_token === 'yes' && ! empty( $access_token ) ) {
+				$requested_token = $request->get_header( 'x-cocart-access-token' );
+
+				// Validate requested token.
+				if ( ! empty( $requested_token ) && ! wp_is_uuid( $requested_token ) ) {
+					throw new \CoCart\DataException( 'cocart_rest_invalid_token', __( 'Invalid token provided.', 'cart-rest-api-for-woocommerce' ), rest_authorization_required_code() );
+				}
+
+				// If token matches then proceed.
+				if ( $access_token == $requested_token ) {
+					return true;
+				} else {
+					throw new \CoCart\DataException( 'cocart_rest_permission_denied', __( 'Permission Denied.', 'cart-rest-api-for-woocommerce' ), rest_authorization_required_code() );
+				}
+			}
+
+			if ( ! wc_rest_check_manager_permissions( 'settings', 'read' ) ) {
+				throw new \CoCart\DataException( 'cocart_rest_cannot_view', __( 'Sorry, you cannot list resources.', 'cart-rest-api-for-woocommerce' ), rest_authorization_required_code() );
+			}
+		} catch ( \CoCart\DataException $e ) {
+			return CoCart_Response::get_error_response( $e->getErrorCode(), $e->getMessage(), $e->getCode(), $e->getAdditionalData() );
 		}
 
 		return true;
