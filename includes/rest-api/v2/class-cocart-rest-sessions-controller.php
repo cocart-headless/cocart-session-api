@@ -82,7 +82,7 @@ class CoCart_REST_Sessions_v2_Controller {
 	/**
 	 * Returns carts in session if any exists.
 	 *
-	 * @throws CoCart_Data_Exception Exception if invalid data is detected.
+	 * @throws CoCart\DataException Exception if invalid data is detected.
 	 *
 	 * @access public
 	 *
@@ -123,7 +123,7 @@ class CoCart_REST_Sessions_v2_Controller {
 			);
 
 			if ( empty( $results ) ) {
-				throw new CoCart_Data_Exception( 'cocart_no_carts_in_session', __( 'No carts in session!', 'cart-rest-api-for-woocommerce' ), 404 );
+				throw new \CoCart\DataException( 'cocart_no_carts_in_session', __( 'No carts in session!', 'cart-rest-api-for-woocommerce' ), 404 );
 			}
 
 			// Contains the results of sessions.
@@ -180,7 +180,7 @@ class CoCart_REST_Sessions_v2_Controller {
 			}
 
 			return CoCart_Response::get_response( $results, $this->namespace, $this->rest_base );
-		} catch ( \CoCart_Data_Exception $e ) {
+		} catch ( \CoCart\DataException $e ) {
 			return CoCart_Response::get_error_response( $e->getErrorCode(), $e->getMessage(), $e->getCode(), $e->getAdditionalData() );
 		}
 	} // END get_carts_in_session()

@@ -45,12 +45,12 @@ class CoCart_REST_Session_Items_v2_Controller extends CoCart_REST_Session_v2_Con
 	/**
 	 * Returns the cart items from the session.
 	 *
-	 * @throws CoCart_Data_Exception Exception if invalid data is detected.
+	 * @throws CoCart\DataException Exception if invalid data is detected.
 	 *
 	 * @access public
 	 *
-	 * @since   3.0.0 Introduced.
-	 * @version 3.1.0
+	 * @since 3.0.0 Introduced.
+	 * @since 4.0.0 Use namespace for DataException.
 	 *
 	 * @param WP_REST_Request $request Request used to generate the response.
 	 *
@@ -63,7 +63,7 @@ class CoCart_REST_Session_Items_v2_Controller extends CoCart_REST_Session_v2_Con
 		try {
 			// The cart key is a required variable.
 			if ( empty( $session_key ) ) {
-				throw new CoCart_Data_Exception( 'cocart_session_key_missing', __( 'Session Key is required!', 'cart-rest-api-for-woocommerce' ), 404 );
+				throw new \CoCart\DataException( 'cocart_session_key_missing', __( 'Session Key is required!', 'cart-rest-api-for-woocommerce' ), 404 );
 			}
 
 			$handler = $this->get_handler();
@@ -73,11 +73,11 @@ class CoCart_REST_Session_Items_v2_Controller extends CoCart_REST_Session_v2_Con
 
 			// If no cart is saved with the ID specified return error.
 			if ( empty( $cart ) ) {
-				throw new CoCart_Data_Exception( 'cocart_cart_in_session_not_valid', __( 'Cart in session is not valid!', 'cart-rest-api-for-woocommerce' ), 404 );
+				throw new \CoCart\DataException( 'cocart_cart_in_session_not_valid', __( 'Cart in session is not valid!', 'cart-rest-api-for-woocommerce' ), 404 );
 			}
 
 			return CoCart_Response::get_response( $this->get_items( maybe_unserialize( $cart['cart'] ), $show_thumb ), $this->namespace, $this->rest_base );
-		} catch ( CoCart_Data_Exception $e ) {
+		} catch ( \CoCart\DataException $e ) {
 			return CoCart_Response::get_error_response( $e->getErrorCode(), $e->getMessage(), $e->getCode(), $e->getAdditionalData() );
 		}
 	} // END get_cart_items_in_session()
