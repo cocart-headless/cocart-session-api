@@ -52,7 +52,7 @@ class CoCart_REST_Delete_Session_v2_Controller extends CoCart_REST_Session_v2_Co
 	 * @since 3.0.0 Introduced.
 	 * @since 4.0.0 Use namespace for DataException.
 	 *
-	 * @param WP_REST_Request $request Request used to generate the response.
+	 * @param WP_REST_Request $request The request object.
 	 *
 	 * @return WP_REST_Response
 	 */

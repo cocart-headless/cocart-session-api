@@ -96,7 +96,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @since 4.0.0 Use namespace for DataException.
 	 * @since 4.0.0 Added check for the access token maybe required.
 	 *
-	 * @param WP_REST_Request $request Request used to generate the response.
+	 * @param WP_REST_Request $request The request object.
 	 *
 	 * @return WP_Error|boolean
 	 */
@@ -166,7 +166,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @since   2.1.0 Introduced.
 	 * @version 3.1.0
 	 *
-	 * @param WP_REST_Request $request Request used to generate the response.
+	 * @param WP_REST_Request $request The request object.
 	 *
 	 * @return WP_REST_Response Returns the cart data from the database.
 	 */
@@ -206,7 +206,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @since 3.1.0 Introduced.
 	 * @since 4.0.0 Deprecated $session_data parameter and now filter response via requested fields.
 	 *
-	 * @param WP_REST_Request $request Request used to generate the response.
+	 * @param WP_REST_Request $request The request object.
 	 *
 	 * @return array $session
 	 */
@@ -295,7 +295,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 * @since 4.0.0 Introduced.
 		 *
 		 * @param array           $session The session before it's returned.
-		 * @param WP_REST_Request $request Request used to generate the response.
+		 * @param WP_REST_Request $request The request object.
 		 * @param object          $this    The session controller.
 		 */
 		return apply_filters( 'cocart_session', $session, $request, $this );
@@ -319,7 +319,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @see CoCart_REST_Cart_v2_Controller::get_items()
 	 *
 	 * @param array           $cart_contents The cart contents passed.
-	 * @param WP_REST_Request $request       Request used to generate the response.
+	 * @param WP_REST_Request $request       The request object.
 	 *
 	 * @return array $items Returns all items in the cart.
 	 */
@@ -345,8 +345,8 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 			 * @param array           $items     Array of items in the cart.
 			 * @param string          $item_key  The item key currently looped.
 			 * @param array           $cart_item The item in the cart containing the default cart item data.
-			 * @param WC_Product      $_product  Product object.
-			 * @param WP_REST_Request $request   Request used to generate the response.
+			 * @param WC_Product      $_product  The product object.
+			 * @param WP_REST_Request $request   The request object.
 			 */
 			$items = apply_filters( 'cocart_cart_items', $items, $item_key, $cart_item, $_product, $request );
 		}
@@ -371,9 +371,9 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 *
 	 * @see CoCart_REST_Cart_v2_Controller::get_item()
 	 *
-	 * @param WC_Product      $_product     Product object.
+	 * @param WC_Product      $_product     The product object.
 	 * @param array           $cart_item    The item in the cart containing the default cart item data.
-	 * @param WP_REST_Request $request      Request used to generate the response.
+	 * @param WP_REST_Request $request      The request object.
 	 * @param boolean         $removed_item Determines if the item in the cart is removed.
 	 *
 	 * @return array $item Full details of the item in the cart and it's purchase limits.
@@ -391,7 +391,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 * @param float                      Original Quantity
 		 * @param string          $item_key  Item key of the item in the cart.
 		 * @param array           $cart_item The item in the cart containing the default cart item data.
-		 * @param WP_REST_Request $request   Request used to generate the response.
+		 * @param WP_REST_Request $request   The request object.
 		 */
 		$quantity   = apply_filters( 'cocart_cart_item_quantity', $cart_item['quantity'], $item_key, $cart_item, $request );
 		$dimensions = $_product->get_dimensions( false );
@@ -459,7 +459,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 *
 		 * @param array           $cart_item Cart item data.
 		 * @param string          $item_key  Item key of the item in the cart.
-		 * @param WP_REST_Request $request   Request used to generate the response.
+		 * @param WP_REST_Request $request   The request object.
 		 */
 		$item['extensions'] = apply_filters( 'cocart_cart_item_extensions', array(), $cart_item_data, $item_key, $request );
 
@@ -848,7 +848,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 *
 	 * @since 4.0.0 Introduced.
 	 *
-	 * @param WP_REST_Request $request Request used to generate the response.
+	 * @param WP_REST_Request $request The request object.
 	 * @param array           $fields  An array of requested fields for the session response to return.
 	 *
 	 * @return array Cart totals.
@@ -883,7 +883,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 * @since 4.0.0 Introduced.
 		 *
 		 * @param array           $totals  Session totals.
-		 * @param WP_REST_Request $request Request used to generate the response.
+		 * @param WP_REST_Request $request The request object.
 		 * @param array           $fields  An array of requested fields for the session response to return.
 		 */
 		return apply_filters( 'cocart_session_totals', $totals, $request, $fields );

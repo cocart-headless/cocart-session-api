@@ -118,7 +118,7 @@ class CoCart_REST_Sessions_v2_Controller {
 	 * @since 3.0.0 Introduced.
 	 * @since 4.0.0 Added pagination and order filtering.
 	 *
-	 * @param WP_REST_Request $request Request used to generate the response.
+	 * @param WP_REST_Request $request The request object.
 	 *
 	 * @return WP_REST_Response Returns the carts in session from the database.
 	 */
