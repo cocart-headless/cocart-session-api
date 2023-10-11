@@ -312,7 +312,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @ignore Function ignored when parsed into Code Reference.
 	 *
 	 * @since 3.0.0 Introduced.
-	 * @since 4.0.0 Added new parameter `$request` (REST API request) to allow more arguments to be passed.
+	 * @since 4.0.0 Added the request object as parameter.
 	 *
 	 * @deprecated 4.0.0 No longer use `$show_thumb` as parameter.
 	 *
@@ -340,11 +340,11 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 			 * Filter allows additional data to be returned for a specific item in cart.
 			 *
 			 * @since 2.1.0 Introduced.
-			 * @since 4.0.0 Added `$request` (REST API request) as parameter.
+			 * @since 4.0.0 Added the request object as parameter.
 			 *
 			 * @param array           $items     Array of items in the cart.
 			 * @param string          $item_key  The item key currently looped.
-			 * @param array           $cart_item The item in the cart containing the default cart item data.
+			 * @param array           $cart_item The cart item data.
 			 * @param WC_Product      $_product  The product object.
 			 * @param WP_REST_Request $request   The request object.
 			 */
@@ -365,18 +365,18 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @ignore Function ignored when parsed into Code Reference.
 	 *
 	 * @since 3.1.0 Introduced.
-	 * @since 4.0.0 Added new parameter `$request` (REST API request) to allow more arguments to be passed.
+	 * @since 4.0.0 Added the request object as parameter.
 	 *
 	 * @deprecated 4.0.0 No longer use `$show_thumb` as parameter.
 	 *
 	 * @see CoCart_REST_Cart_v2_Controller::get_item()
 	 *
 	 * @param WC_Product      $_product     The product object.
-	 * @param array           $cart_item    The item in the cart containing the default cart item data.
+	 * @param array           $cart_item    The cart item data.
 	 * @param WP_REST_Request $request      The request object.
 	 * @param boolean         $removed_item Determines if the item in the cart is removed.
 	 *
-	 * @return array $item Full details of the item in the cart and it's purchase limits.
+	 * @return array $item Returns the item prepared for the cart response.
 	 */
 	public function get_item( $_product, $cart_item = array(), $request = array(), $removed_item = false ) {
 		$show_thumb = ! empty( $request['thumb'] ) ? $request['thumb'] : false;
@@ -389,8 +389,8 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 * The quantity may need to show as a different quantity depending on the product added.
 		 *
 		 * @param float                      Original Quantity
-		 * @param string          $item_key  Item key of the item in the cart.
-		 * @param array           $cart_item The item in the cart containing the default cart item data.
+		 * @param string          $item_key  Generated ID based on the product information when added to the cart.
+		 * @param array           $cart_item The cart item data.
 		 * @param WP_REST_Request $request   The request object.
 		 */
 		$quantity   = apply_filters( 'cocart_cart_item_quantity', $cart_item['quantity'], $item_key, $cart_item, $request );
@@ -440,8 +440,8 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 *
 		 * @since 3.0.0 Introduced.
 		 *
-		 * @param array  $cart_item Cart item data.
-		 * @param string $item_key  Item key of the item in the cart.
+		 * @param array  $cart_item The cart item data.
+		 * @param string $item_key  Generated ID based on the product information when added to the cart.
 		 */
 		$cart_item_data = apply_filters( 'cocart_cart_item_data', $cart_item, $item_key );
 
@@ -457,8 +457,8 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 		 *
 		 * @since 4.0.0 Introduced.
 		 *
-		 * @param array           $cart_item Cart item data.
-		 * @param string          $item_key  Item key of the item in the cart.
+		 * @param array           $cart_item The cart item data.
+		 * @param string          $item_key  Generated ID based on the product information when added to the cart.
 		 * @param WP_REST_Request $request   The request object.
 		 */
 		$item['extensions'] = apply_filters( 'cocart_cart_item_extensions', array(), $cart_item_data, $item_key, $request );
@@ -544,7 +544,7 @@ class CoCart_REST_Session_v2_Controller extends CoCart_REST_Cart_v2_Controller {
 	 * @ignore Function ignored when parsed into Code Reference.
 	 *
 	 * @since 3.1.0 Introduced.
-	 * @since 4.0.0 Added `$request` (REST API request) as a parameter.
+	 * @since 4.0.0 Added the request object as parameter.
 	 *
 	 * @see CoCart_REST_Cart_v2_Controller::get_fees()
 	 *
